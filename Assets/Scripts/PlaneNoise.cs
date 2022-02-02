@@ -27,16 +27,16 @@ public class PlaneNoise : MonoBehaviour
             vertices[i]= SourceVertices[i] + new Vector3(Random.Range(-_might,_might),Random.Range(-_might,_might),Random.Range(-_might,_might));
         }
         mesh.vertices=vertices;
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
+       /* mesh.RecalculateBounds();
+        mesh.RecalculateNormals();*/
     }
 
     [ContextMenu("SetNewMesh")]
     public void SetNewMesh()
     {
         mesh=GetComponent<MeshFilter>().mesh;
-        mesh.vertices=VecticesGenerator(10,10);
-        mesh.triangles=TrianglesGenerator(10,10);
+        mesh.vertices=VecticesGenerator(1000,1000);
+        mesh.triangles=TrianglesGenerator(1000,1000);
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
         GetComponent<MeshFilter>().mesh=mesh;
@@ -95,8 +95,8 @@ public class PlaneNoise : MonoBehaviour
     {
         GetComponent<MeshFilter>().mesh=mesh=new Mesh();
         mesh.name="Procedural Grid";
-        int xSize = 15;
-        int ySize = 15;
+        int xSize = 9;
+        int ySize = 9;
 
         Vector3[] vertices=new Vector3[(xSize+1)*(ySize+1)];
         for(int i = 0, y = 0; y<=ySize; y++)

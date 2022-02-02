@@ -1,0 +1,22 @@
+#pragma kernel CSMain
+
+
+StructuredBuffer<float3> in_vertices;
+StructuredBuffer<float3> in_noise;
+
+RWStructuredBuffer<float3> out_vertices;
+float costime;
+uint size;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x < size || id.x >= size * size - size || id.x % size == 0 || (id.x + 1)%size == 0)//if border vertices
+    {
+        out_vertices[id.x] = in_vertices[id.x];
+    }
+    else
+    {
+        out_vertices[id.x] = float3(in_vertices[id.x].x + in_noise[id.x].x * costime, in_vertices[id.x].y + in_noise[id.x].y * costime, in_vertices[id.x].z + in_noise[id.x].z * costime);
+    }
+}
