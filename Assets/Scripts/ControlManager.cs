@@ -8,28 +8,33 @@ public class ControlManager : MonoBehaviour
     private float moweSpeed;
     [SerializeField]
     private float rotationSpeed;
+    [SerializeField]
+    private float rayLength;
+
     private float sourceY;
+
     private void Start()
     {
         sourceY=transform.position.y;
     }
+
     void Update()
     {
     if(Input.GetKey(KeyCode.W))
         {
-            transform.Translate((transform.forward)*moweSpeed*Time.deltaTime,Space.World);
+            Mowe(transform.forward);
         }
     if(Input.GetKey(KeyCode.S))
         {
-            transform.Translate(-transform.forward*moweSpeed*Time.deltaTime,Space.World);
+            Mowe(-transform.forward);
         }
      if(Input.GetKey(KeyCode.A))
         {
-            transform.Translate(-transform.right*moweSpeed*Time.deltaTime,Space.World);
+            Mowe(-transform.right);
         }
      if(Input.GetKey(KeyCode.D))
         {
-            transform.Translate(transform.right*moweSpeed*Time.deltaTime,Space.World);
+            Mowe(transform.right);
         }
      if(Input.GetKey(KeyCode.Q))
         {
@@ -40,5 +45,15 @@ public class ControlManager : MonoBehaviour
             transform.Rotate(new Vector3(0f,rotationSpeed*Time.deltaTime,0f),Space.World);
         }
         transform.position=new Vector3(transform.position.x,sourceY,transform.position.z);
+    }
+
+    void Mowe(Vector3 direction)
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position,direction,out hit,rayLength))
+        {
+            return;
+        }
+        transform.Translate((direction)*moweSpeed*Time.deltaTime,Space.World);
     }
 }
