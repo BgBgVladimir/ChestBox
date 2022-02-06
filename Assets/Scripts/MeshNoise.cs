@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MeshNoise : MonoBehaviour
 {
-    public ComputeShader shader;
+    [SerializeField]
+    private ComputeShader shader;
+
     private ComputeBuffer in_buffer,out_buffer,noiseBuffer;
     private int kernelHandle;
 
@@ -19,7 +21,7 @@ public class MeshNoise : MonoBehaviour
     private float timeMultiplier;
     private void Awake()
     {
-        shader=Instantiate(shader);
+        shader = Instantiate(shader);
         mesh = GetComponent<MeshFilter>().mesh;
         verticesCnt = mesh.vertices.Length;
         size = (int)Mathf.Sqrt(verticesCnt);
@@ -42,7 +44,6 @@ public class MeshNoise : MonoBehaviour
 
     private void Update()
     {
-      //  noiseBuffer.SetData(generateNoise(verticesCnt,noiseStrength));
         shader.SetFloat("costime",Mathf.Cos(Time.time*timeMultiplier));
         shader.Dispatch(kernelHandle,verticesCnt,1,1);
         out_buffer.GetData(out_verticesArray);
